@@ -53,7 +53,7 @@ export function useTgcStore() {
   }, [missions]);
 
   const addPoints = (basePoints: number, reason: string) => {
-    const multiplier = TICKET_MULTIPLIERS[user.ticketType];
+    const multiplier = TICKET_MULTIPLIERS[user.ticketType] || 1.0;
     const earned = Math.round(basePoints * multiplier);
     
     setUser(prev => {
@@ -82,19 +82,19 @@ export function useTgcStore() {
 
   const completeMission = (id: string) => {
     setMissions(prev => {
-      const mission = prev.find(m => m.id === id);
+      const mission = (prev || []).find(m => m.id === id);
       if (mission && !mission.isCompleted) {
         addPoints(mission.points, `Completed: ${mission.title}`);
-        return prev.map(m => m.id === id ? { ...m, isCompleted: true } : m);
+        return (prev || []).map(m => m.id === id ? { ...m, isCompleted: true } : m);
       }
-      return prev;
+      return prev || [];
     });
   };
 
   const claimVoucher = (id: string) => {
     setUser(prev => ({
       ...prev,
-      vouchers: prev.vouchers.map(v => v.id === id ? { ...v, claimed: true } : v)
+      vouchers: (prev.vouchers || []).map(v => v.id === id ? { ...v, claimed: true } : v)
     }));
     setNotification({
       message: 'Voucher claimed successfully!',
