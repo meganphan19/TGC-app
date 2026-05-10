@@ -1,8 +1,8 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { User, Target, Map as MapIcon, ShoppingBag } from 'lucide-react';
+import { User, Target, Map as MapIcon, ShoppingBag, Wallet as WalletIcon } from 'lucide-react';
 
-export type Tab = 'passport' | 'missions' | 'guide' | 'store';
+export type Tab = 'passport' | 'missions' | 'guide' | 'store' | 'wallet';
 
 interface NavigationProps {
   activeTab: Tab;
@@ -11,10 +11,11 @@ interface NavigationProps {
 
 export default function Navigation({ activeTab, setActiveTab }: NavigationProps) {
   const tabs: { id: Tab; label: string; icon: any }[] = [
-    { id: 'passport', label: 'Passport', icon: User },
-    { id: 'missions', label: 'Missions', icon: Target },
-    { id: 'guide', label: 'Guide', icon: MapIcon },
-    { id: 'store', label: 'Explore', icon: ShoppingBag },
+    { id: 'passport', label: 'ID', icon: User },
+    { id: 'wallet', label: 'Wallet', icon: WalletIcon },
+    { id: 'missions', label: 'Tasks', icon: Target },
+    { id: 'guide', label: 'Map', icon: MapIcon },
+    { id: 'store', label: 'Shop', icon: ShoppingBag },
   ];
 
   return (

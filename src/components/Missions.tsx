@@ -6,14 +6,25 @@ import { Mission } from '../types';
 interface MissionsProps {
   missions: Mission[];
   onComplete: (id: string) => void;
+  onScan: () => void;
 }
 
-export default function Missions({ missions, onComplete }: MissionsProps) {
+export default function Missions({ missions = [], onComplete, onScan }: MissionsProps) {
   const completedCount = missions.filter(m => m.isCompleted).length;
-  const progress = (completedCount / missions.length) * 100;
+  const progress = missions.length > 0 ? (completedCount / missions.length) * 100 : 0;
 
   return (
     <div className="flex flex-col gap-8 p-4">
+      {/* Scan Quick Action */}
+      <motion.button 
+        whileTap={{ scale: 0.98 }}
+        onClick={onScan}
+        className="w-full h-16 bg-gradient-to-r from-tgc-pink to-fuchsia-600 rounded-2xl flex items-center justify-center gap-3 shadow-lg shadow-tgc-pink/20"
+      >
+        <QrCode size={24} className="text-white" />
+        <span className="text-white font-display font-black uppercase tracking-[0.2em] text-sm">Scan Sponsor QR</span>
+      </motion.button>
+
       {/* Progress Card */}
       <div className="glass-panel rounded-2xl p-6 overflow-hidden relative">
         <div className="absolute top-0 right-0 p-4 opacity-10">

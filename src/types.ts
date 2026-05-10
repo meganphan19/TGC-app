@@ -1,5 +1,16 @@
 
-export type Tier = 'Fan' | 'Expert' | 'Icon' | 'Muse';
+export type Tier = 'New-Gen' | 'Trendsetter' | 'Icon' | 'Muse';
+export type TicketType = 'Standard' | 'Priority' | 'VVIP';
+
+export interface Voucher {
+  id: string;
+  title: string;
+  brand: string;
+  discount: string;
+  code: string;
+  expiry: string;
+  claimed: boolean;
+}
 
 export interface UserProfile {
   id: string;
@@ -7,6 +18,8 @@ export interface UserProfile {
   tier: Tier;
   points: number;
   qrCode: string;
+  ticketType: TicketType;
+  vouchers: Voucher[];
 }
 
 export interface Mission {

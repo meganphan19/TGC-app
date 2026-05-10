@@ -10,7 +10,7 @@ interface StoreProps {
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-export default function Store({ products }: StoreProps) {
+export default function Store({ products = [] }: StoreProps) {
   const [recommendation, setRecommendation] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 

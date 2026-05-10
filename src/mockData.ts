@@ -3,9 +3,30 @@ import { UserProfile, Mission, Product, EventLocation } from './types';
 export const MOCK_USER: UserProfile = {
   id: 'TGC-2026-XQ9',
   name: 'Megan Phan',
-  tier: 'Expert',
+  tier: 'Trendsetter',
   points: 1250,
   qrCode: 'tgc-user-megan-phan-2026',
+  ticketType: 'Priority',
+  vouchers: [
+    {
+      id: 'v1',
+      title: '5% OFF New Collection',
+      brand: 'PUMA',
+      discount: '5%',
+      code: 'PUMATGC5',
+      expiry: '2026-05-30',
+      claimed: false,
+    },
+    {
+      id: 'v2',
+      title: 'Free Glow Sample',
+      brand: 'Shiseido',
+      discount: 'FREE',
+      code: 'SHIGLOW',
+      expiry: '2026-05-15',
+      claimed: true,
+    }
+  ],
 };
 
 export const MOCK_MISSIONS: Mission[] = [

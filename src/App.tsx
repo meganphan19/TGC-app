@@ -17,19 +17,48 @@ import Passport from './components/Passport';
 import Missions from './components/Missions';
 import Guide from './components/Guide';
 import Store from './components/Store';
+import Wallet from './components/Wallet';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>('passport');
   const [isSyncing, setIsSyncing] = useState(false);
-  const { user, missions, products, completeMission } = useTgcStore();
+  const { user, missions, products, notification, setNotification, completeMission, addPoints, claimVoucher } = useTgcStore();
 
   const handleSync = () => {
     setIsSyncing(true);
     setTimeout(() => setIsSyncing(false), 1500);
   };
 
+  const handleScan = () => {
+    addPoints(150, 'Sponsor Booth Scan');
+    setNotification({
+      message: 'BOOTH SCANNED! +150 Spark Points added.',
+      type: 'success'
+    });
+  };
+
   return (
-    <div className="min-h-screen pb-32 flex flex-col items-center">
+    <div className="min-h-screen pb-32 flex flex-col items-center overflow-x-hidden">
+      {/* Global Notifications */}
+      <AnimatePresence>
+        {notification && (
+          <motion.div 
+            initial={{ y: -100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -100, opacity: 0 }}
+            className={`fixed top-24 left-4 right-4 z-50 p-4 rounded-2xl shadow-2xl flex items-center gap-3 border ${
+              notification.type === 'success' ? 'bg-emerald-500/90 border-emerald-400' : 'bg-tgc-pink/90 border-tgc-pink/50'
+            } backdrop-blur-xl`}
+          >
+            <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+              <Bell size={18} className="text-white" />
+            </div>
+            <p className="flex-1 text-sm font-display font-bold text-white tracking-tight uppercase">{notification.message}</p>
+            <button onClick={() => setNotification(null)} className="text-white/60 hover:text-white transition-opacity text-xs uppercase font-bold">Close</button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Header */}
       <header className="w-full max-w-xl flex justify-between items-center p-6 sticky top-0 z-40 bg-tgc-black/50 backdrop-blur-xl">
         <div className="flex items-center gap-3">
@@ -89,7 +118,17 @@ export default function App() {
                   <h1 className="font-display text-2xl font-black uppercase tracking-tight">Mission Engine</h1>
                   <p className="text-[10px] uppercase tracking-[0.2em] text-tgc-pink font-bold">Earn points • Unlock Rewards</p>
                 </div>
-                <Missions missions={missions} onComplete={completeMission} />
+                <Missions missions={missions} onComplete={completeMission} onScan={handleScan} />
+              </section>
+            )}
+
+            {activeTab === 'wallet' && (
+              <section className="space-y-2">
+                <div className="px-6 space-y-1">
+                  <h1 className="font-display text-2xl font-black uppercase tracking-tight">My Wallet</h1>
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-tgc-pink font-bold">Vouchers • Benefits • VIP Access</p>
+                </div>
+                <Wallet user={user} onClaim={claimVoucher} />
               </section>
             )}
 
