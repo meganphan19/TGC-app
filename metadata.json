@@ -1,0 +1,8 @@
+{
+  "name": "TGC Vietnam Digital Passport",
+  "description": "A premium digital passport app for Tokyo Girls Collection Vietnam featuring stamp rallies, interactive guides, and O2O commerce.",
+  "requestFramePermissions": [
+    "geolocation"
+  ],
+  "majorCapabilities": []
+}
