@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Ticket, Gift, ExternalLink, Clock, CheckCircle, Star } from 'lucide-react';
-import { Voucher } from '../types';
+import { Voucher, UserProfile, Tier } from '../types';
 
 interface WalletProps {
   user: UserProfile;
