@@ -8,7 +8,18 @@ interface StoreProps {
   products: Product[];
 }
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+let genAI: GoogleGenAI | null = null;
+
+function getGenAI() {
+  if (!genAI) {
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      throw new Error('GEMINI_API_KEY is not defined');
+    }
+    genAI = new GoogleGenAI(apiKey);
+  }
+  return genAI;
+}
 
 export default function Store({ products = [] }: StoreProps) {
   const [recommendation, setRecommendation] = useState<string | null>(null);
@@ -20,14 +31,13 @@ export default function Store({ products = [] }: StoreProps) {
   const getSmartLead = async (productName: string) => {
     setLoading(true);
     try {
-      const response = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
-        contents: `You are a luxury fashion & travel concierge for TGC (Tokyo Girls Collection) Vietnam. 
+      const ai = getGenAI();
+      const model = ai.getGenerativeModel({ model: 'gemini-3-flash-preview' });
+      const response = await model.generateContent(`You are a luxury fashion & travel concierge for TGC (Tokyo Girls Collection) Vietnam. 
         A user is interested in the "${productName}". 
         Suggest a specific trendy spot in Tokyo to visit wearing this item, and a "Travel Lead" (e.g. a high-end hotel or experience).
-        Keep it brief (max 2 sentences), chic, and alluring.`,
-      });
-      setRecommendation(response.text || null);
+        Keep it brief (max 2 sentences), chic, and alluring.`);
+      setRecommendation(response.response.text() || null);
     } catch (error) {
       console.error(error);
       setRecommendation("Discover the neon lights of Shibuya in your new look. Book our Tokyo Luxe package.");
